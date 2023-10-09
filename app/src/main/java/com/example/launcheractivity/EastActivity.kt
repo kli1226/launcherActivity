@@ -14,6 +14,5 @@ class EastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEastBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
-//        binding.homeActivity.setOnTouchListener(touchListener);
     }
 }
