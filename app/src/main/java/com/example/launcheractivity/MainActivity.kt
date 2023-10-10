@@ -1,4 +1,5 @@
 package com.example.launcheractivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -46,16 +47,24 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener{
                 if (abs(valueX) > MIN_DISTANCE) {
                     // Detect left to right swipe
                     if (x2 > x1) {
+                        val intent = Intent(this, EastActivity::class.java)
+                        startActivity(intent)
                         Toast.makeText(this, "Right swipe", Toast.LENGTH_SHORT).show()
                     } else {
+                        val intent = Intent(this, WestActivity::class.java)
+                        startActivity(intent)
                         // Detect right to left swipe
                         Toast.makeText(this, "Left swipe", Toast.LENGTH_SHORT).show()
                     }
                 } else if (abs(valueY) > MIN_DISTANCE) {
                     // Detect top to bottom swipe
                     if (y2 > y1) {
+                        val intent = Intent(this, SouthActivity::class.java)
+                        startActivity(intent)
                         Toast.makeText(this, "Bottom swipe", Toast.LENGTH_SHORT).show()
                     } else {
+                        val intent = Intent(this, NorthActivity::class.java)
+                        startActivity(intent)
                         // Detect bottom to top swipe
                         Toast.makeText(this, "Top swipe", Toast.LENGTH_SHORT).show()
                     }
