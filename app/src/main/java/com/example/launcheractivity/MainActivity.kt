@@ -8,90 +8,92 @@ import androidx.core.view.GestureDetectorCompat
 import com.example.launcheractivity.databinding.ActivityMainBinding
 import kotlin.math.abs
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener{
     private lateinit var binding: ActivityMainBinding
-    private var gestureDetector = GestureDetectorCompat(this, DirectionGestureListener())
+    private lateinit var gestureDetector: GestureDetector
+    var x2 = 0.0f
+    var x1 = 0.0f
+    var y2 = 0.0f
+    var y1 = 0.0f
+
+    companion object {
+        const val MIN_DISTANCE = 150
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+        gestureDetector = GestureDetector(this, this)
     }
 
-    // Listening for the users tapping on the screen
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        // Meaning that the event was handled
-        return if(gestureDetector.onTouchEvent(event)){
-            true
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event != null) {
+            gestureDetector.onTouchEvent(event)
         }
-        else{
-            super.onTouchEvent(event)}
-    }
-    inner class DirectionGestureListener : GestureDetector.SimpleOnGestureListener(){
-
-        // This determines if it is an accidental tap or a swipe
-        private val THRESHOLD = 100
-        // This determines how fast the user is swiping
-        private val VELOCITY_THRESHOLD = 100
-        override fun onFling(
-            downEvent: MotionEvent,
-            moveEvent: MotionEvent,
-            velocityX: Float,
-            velocityY: Float
-        ): Boolean {
-            val diffX = moveEvent.x.minus(downEvent.x) ?: 0.0F
-            val diffY = moveEvent.y.minus(downEvent.y) ?: 0.0F
-
-            // Either left or right swipe
-            return if(abs(diffX) > abs(diffY)){
-                if(abs(diffX) > THRESHOLD && abs(velocityX) > VELOCITY_THRESHOLD){
-                    // It's a RIGHT SWIPE if the difference is a positive number
-                    if(diffX > 0){
-                        this@MainActivity.onSwipeRight()
+        when(event?.action){
+//            Start swipe
+            0 ->{
+                x1 = event.x
+                y1 = event.y
+            }
+//            End swipe
+            1 -> {
+                x2 = event.x
+                y2 = event.y
+                val valueX: Float = x2 - x1
+                val valueY: Float = y2 - y1
+                if (abs(valueX) > MIN_DISTANCE) {
+                    // Detect left to right swipe
+                    if (x2 > x1) {
+                        Toast.makeText(this, "Right swipe", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Detect right to left swipe
+                        Toast.makeText(this, "Left swipe", Toast.LENGTH_SHORT).show()
                     }
-                    // It's a LEFT SWIPE if the difference is a negative number
-                    else{
-                        this@MainActivity.onSwipeLeft()
+                } else if (abs(valueY) > MIN_DISTANCE) {
+                    // Detect top to bottom swipe
+                    if (y2 > y1) {
+                        Toast.makeText(this, "Bottom swipe", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Detect bottom to top swipe
+                        Toast.makeText(this, "Top swipe", Toast.LENGTH_SHORT).show()
                     }
-                    true
-                }
-                else{
-                    super.onFling(downEvent, moveEvent, velocityX, velocityY)
                 }
             }
-            // Either up or down swipe
-            else{
-                if(abs(diffY) > THRESHOLD && abs(velocityY) > VELOCITY_THRESHOLD){
-                    // It's a TOP SWIPE if the difference is a positive number
-                    if(diffY > 0){
-                        this@MainActivity.onSwipeTop()
-                    }
-                    // It's a BOTTOM SWIPE if the difference is a negative number
-                    else{
-                        this@MainActivity.onSwipeBottom()
-                    }
-                    true
-                }
-                else{
-                    super.onFling(downEvent, moveEvent, velocityX, velocityY)
-                }
-            }
+
+
         }
+        return super.onTouchEvent(event)
     }
 
-    private fun onSwipeBottom() {
-        Toast.makeText(this, "Bottom Swipe", Toast.LENGTH_LONG).show()
+    override fun onDown(p0: MotionEvent): Boolean {
+//        TODO("Not yet implemented")
+        return false
     }
 
-    private fun onSwipeTop() {
-        Toast.makeText(this, "Top Swipe", Toast.LENGTH_LONG).show()
+    override fun onShowPress(p0: MotionEvent) {
+//        TODO("Not yet implemented")
     }
 
-    private fun onSwipeLeft() {
-        Toast.makeText(this, "Left Swipe", Toast.LENGTH_LONG).show()
+    override fun onSingleTapUp(p0: MotionEvent): Boolean {
+//        TODO("Not yet implemented")
+        return false
     }
 
-    private fun onSwipeRight() {
-        Toast.makeText(this, "Right Swipe", Toast.LENGTH_LONG).show()
+    override fun onScroll(p0: MotionEvent, p1: MotionEvent, p2: Float, p3: Float): Boolean {
+//        TODO("Not yet implemented")
+        return false
     }
+
+    override fun onLongPress(p0: MotionEvent) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onFling(p0: MotionEvent, p1: MotionEvent, p2: Float, p3: Float): Boolean {
+//        TODO("Not yet implemented")
+        return false
+    }
+
+
 }
